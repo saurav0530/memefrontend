@@ -21,22 +21,24 @@
 			background-size: cover;
 			z-index: -1;
 		}
-		.nav-link{
+		.nav-link1{
 			width: max-content;
 			margin-left: 1em !important;
 		}
 		.navbar{
 			background-color: rgba(0,0,0,0.7) !important;
 		}
+		.modal-​backdrop, .modal
+		{ z-index: 100000 !important; }
   </style>
 </head>
 <body>
 
 	{{>navbar}}
+	<div style="padding-top: 50px;"></div>
 	{{#each data}}		
 		<div style="padding-top: 1em;">{{>memeCards}}</div>
 	{{/each}}
-	{{>footer}}
 
 	
 </body>

@@ -55,6 +55,15 @@ app.post('/',(req,res)=>{
     res.redirect('/')
 })
 
+app.post('/memesbyid',async (req, res)=>{
+    if(!req.body.id)
+        res.redirect('/')
+    const response = await axios.get('https://memestreambackend.herokuapp.com/memes/'+req.body.id)
+    const data = await response.data
+    //console.log(data)
+    res.render('index', {data})
+})
+
 app.listen(port, ()=>{
     console.log("Server started at "+ port)
 })
