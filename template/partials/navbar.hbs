@@ -1,0 +1,39 @@
+<nav class="navbar navbar-expand-sm navbar-dark bg-light fixed-top">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <a class="navbar-brand mx-auto" href="#"><strong style="color: white;">MEME STREAM</strong> </a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item">
+
+                <!-- Button trigger modal -->
+                <a class="nav-link active" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor: pointer;">
+                Create meme
+                </a>
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel" ><strong>Create meme</strong></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{>postMemeForm}}
+                    </div>
+                    </div>
+                </div>
+                </div>
+
+        </li>
+      </ul>
+      <form class="d-flex ml-auto">
+        <input class="form-control me-2" type="search" placeholder="Search memes by ID" aria-label="Search">
+        <button class="btn btn-outline-white" type="submit">Search</button>
+      </form>
+    </div>
+  </div>
+</nav>
