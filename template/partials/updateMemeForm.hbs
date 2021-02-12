@@ -1,0 +1,26 @@
+<div class="card border-dark mx-auto" style="max-width: 1000px;">
+<div class="card-header" style="background-color:#7fcf9d;">
+    <strong>Update meme portal </strong>
+</div>
+<div class="card-body text-dark">
+    <form action="/updatememe" method="post">
+        <div class="mb-3">
+            <label for="id" class="form-label">Meme Owner:</label>
+            <input type="text" name="id" class="form-control" value="{{this._id}}" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Meme Owner:</label>
+            <input type="text" name="name" class="form-control" value="{{this.name}}" placeholder="Enter your full name" readonly>
+        </div>
+        <div class="mb-3">
+            <label for="caption" class="form-label">Caption:</label>
+            <input type="text" name="caption" class="form-control" value="{{this.caption}}" placeholder="Be creative with the caption">
+        </div>
+        <div class="mb-3">
+            <label for="imgURL" class="form-label">Meme URL:</label>
+            <input type="text" name="imgURL" class="form-control" value="{{this.imgURL}}" placeholder="Enter URL of your meme here">
+        </div>
+        <button type="submit" class="btn btn-success">Update meme</button>
+    </form>
+</div>
+</div>
