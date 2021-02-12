@@ -24,15 +24,17 @@ app.set( 'view engine', 'hbs')
 app.set( 'views', viewsPath)
 hbs.registerPartials(partialsPath)
 
-// https://global-uploads.webflow.com/5ef5480befd392489dacf544/5f9f5e5943de7e69a1339242_5f44a7398c0cdf460857e744_img-image-p-1080.jpeg
-// https://images.shiksha.com/mediadata/images/1488957338php64h36h.jpeg
-// https://bloximages.newyork1.vhttps://www.google.com/url?sa=i&url=https%3A%2F%2Fdavidbaptistechirot.blogspot.com%2F2017%2F03%2Fmeme-background.html&psig=AOvVaw2DXYXFbwJ2FViNh9g-hbfV&ust=1613184136858000&source=images&cd=vfe&ved=0CAIQjRxqFwoTCOD7r9Wp4-4CFQAAAAAdAAAAABAKip.townnews.com/oanow.com/content/tncms/assets/v3/editorial/9/e5/9e516270-456f-11e6-a64d-b39d9c0ac062/57804b262725b.image.jpg?resize=1200%2C800
-
-
 app.get('/',async (req, res) =>{
     const response = await axios.get('https://memestreambackend.herokuapp.com/memes')
     const data = await response.data
     //console.log(data)
+    var mid = data.length/2, temp;
+    for(var i=0; i<data.length/2; i++)
+    {
+        temp = data[i];
+        data[i]=data[data.length - i -1]
+        data[data.length - i - 1] = temp
+    }
     res.render('index', {data})
 })
 
