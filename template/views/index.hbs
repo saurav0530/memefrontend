@@ -24,11 +24,41 @@
 		.navbar{
 			background-color: rgba(0,0,0,0.7) !important;
 		}
+		.create{
+			border:1px brown solid;
+			color:white; 
+			max-width : 800px !important;
+			margin-top:2px;
+		}
   </style>
 </head>
 <body>
 
 	{{>navbar}}
+	<!-- Button trigger modal -->
+                
+					<div class = "sticky-top mx-auto" style="z-index: 100; max-width:400px;">
+						<button class="btn btn-success create btn-block" data-bs-toggle="modal" data-bs-target="#staticBackdrop">
+							Create meme
+						</button>
+					</div>
+				
+				
+
+                <!-- Modal -->
+                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 100000 !important;">
+                <div class="modal-dialog modal-lg modal-dialog-centered" >
+                    <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel" ><strong>Create meme</strong></h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        {{>postMemeForm}}
+                    </div>
+                    </div>
+                </div>
+                </div>
 	<div on="alert({{errorMssg}})" style=""></div>
 	{{#each data}}		
 		<div style="padding-top: 2px;">{{>memeCards}}</div>

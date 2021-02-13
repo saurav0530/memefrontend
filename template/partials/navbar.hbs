@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-light" style="">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="">
   <div class="container-fluid">
     <a class="navbar-brand" href="#"><strong style="color: white;">MEME STREAM</strong> </a>
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -7,29 +7,6 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item"> <a href="/" class="nav-link" style="color: white;">Home</a></li>
-        <li class="nav-item">
-
-                <!-- Button trigger modal -->
-                <a class="nav-link" data-bs-toggle="modal" data-bs-target="#staticBackdrop" style="cursor: pointer;color:white;">
-                Create meme
-                </a>
-
-                <!-- Modal -->
-                <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true" style="z-index: 100000 !important;">
-                <div class="modal-dialog modal-lg modal-dialog-centered" >
-                    <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="staticBackdropLabel" ><strong>Create meme</strong></h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        {{>postMemeForm}}
-                    </div>
-                    </div>
-                </div>
-                </div>
-
-        </li>
       </ul>
       <form class="d-flex ml-auto" method = "POST" action="/memesbyid">
         <input class="form-control me-2" placeholder="Search memes by ID" name = "id">

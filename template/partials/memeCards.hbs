@@ -3,10 +3,10 @@
     <strong>Meme ID: </strong> <small style="text-decoration: underline;">{{this._id}}</small>
     <div style="position: absolute; right:0;display:inline;cursor:pointer;">
         <form action="/memes/edit/{{this._id}}" method="POST" style="display : inline;">
-            <button style="background-color: transparent;border:none;"><img src="/icons/pencil.svg" title="Edit" style="padding-right: 0.5em;" onclick="this.form.submit()"></button>
+            <button style="background-color: transparent;border:none; outline:none;"><img src="/icons/pencil.svg" title="Edit" style="padding-right: 0.5em;" onclick="this.form.submit()"></button>
         </form>
         <form method="post" action="/memes/delete/{{this._id}}" style="display:inline;">
-            <button style="background-color: transparent;border:none;"><img src="/icons/trash.svg" id="delete" title="Delete" style="padding-right: 1em;" onclick="this.form.submit()"></button>
+            <button style="background-color: transparent;border:none;outline:none;"><img src="/icons/trash.svg" id="delete" title="Delete" style="padding-right: 1em;" onclick="this.form.submit()"></button>
         </form>
     </div>
 </div>
