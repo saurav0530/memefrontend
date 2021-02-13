@@ -6,7 +6,7 @@ const hbs = require('hbs')
 const axios = require('axios')
 const flash = require('express-flash')
 const session = require('express-session')
-//const bootstrap = require('bootstrap')
+const apiURL = require('../constants')
 
 const app = express()
 const port = process.env.PORT || 3000
@@ -32,87 +32,52 @@ app.set( 'views', viewsPath)
 hbs.registerPartials(partialsPath)
 app.use( express.static(resourcePath))
 
+// To get home page
 app.get('/',async (req, res) =>{
-    const response = await axios.get('https://memestreambackend.herokuapp.com/memes')
-    const data = await response.data
-    //console.log(data)
-    var mid = data.length/2, temp;
-    for(var i=0; i<data.length/2; i++)
-    {
-        temp = data[i];
-        data[i]=data[data.length - i -1]
-        data[data.length - i - 1] = temp
-    }
+    const response = await axios.get(apiURL+'/memes')
+    var data = await response.data
+    
     var message = req.flash('message')
     req.flash('message','')
-    res.render('index', {
+    res.status(200).render('index', {
         data,
         message : message
     })
 })
 
-app.post('/',(req,res)=>{
-    var months = ['January','February','March','April','May','June','July','August','September','October','November','December']
-    var date = new Date(Date.now())
-    var date = `Posted on ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+// POST portal for creating meme
+app.post('/',async (req,res)=>{
     var data = {
         name : req.body.name,
         caption : req.body.caption,
-        imgURL : req.body.imgURL,
-        date : date
+        url : req.body.url
     }
-    //console.log(data)
-
-    axios({
-        method: "post",
-        url: 'https://memestreambackend.herokuapp.com/memes',  
-        data : data
-    })
-    .then( response => console.log(response))
-    .catch( err => console.log(err.response))
-    req.flash('message','Memes added successfully.')
-    res.redirect('/')
-})
-app.post('/memes/delete/:id',async (req,res)=>{
-    var data = {
-        id : req.params.id
-    }
-    var returndata
     await axios({
         method: "post",
-        url: 'https://memestreambackend.herokuapp.com/memes/delete',  
+        url: apiURL+'/memes',  
         data : data
     })
-    .then( response => returndata = response)
-    .catch( err => console.log(err.response))
-    req.flash('message','Memes deleted successfully')
-    res.redirect('/')
-})
-
-app.post('/memes/edit/:id',async (req,res)=>{
+    .then( response => {
+        console.log(response.data)
+        req.flash('message','Memes added successfully.')
+    })
+    .catch( err => req.flash('message',"Meme already exists. Cannot upload duplicate meme."))
     
-    const response = await axios.get('https://memestreambackend.herokuapp.com/memes/'+req.params.id)
-    const data = await response.data
-    //console.log(data)
-    res.render('updatepage', data[0])
+    res.redirect('/')
 })
 
+// POST portal for updating meme
 app.post('/updatememe',async (req,res)=>{
-    var months = ['January','February','March','April','May','June','July','August','September','October','November','December']
-    var date = new Date(Date.now())
-    var date = `Updated on ${months[date.getMonth()]} ${date.getDate()}, ${date.getFullYear()}`
+    
     var data = {
-        id : req.body.id,
-        name : req.body.name,
         caption : req.body.caption,
-        imgURL : req.body.imgURL,
-        date : date
+        url : req.body.url
     }
     //console.log(data)
 
     await axios({
-        method: "post",
-        url: 'https://memestreambackend.herokuapp.com/memes/edit',  
+        method: "patch",
+        url: apiURL+'/memes/'+req.body.id,  
         data : data
     })
     .then( response => console.log(response))
@@ -122,15 +87,71 @@ app.post('/updatememe',async (req,res)=>{
     res.redirect('/')
 })
 
-app.post('/memesbyid',async (req, res)=>{
-    if(!req.body.id)
-        res.redirect('/')
-    const response = await axios.get('https://memestreambackend.herokuapp.com/memes/'+req.body.id)
+// POST portal to render update page for requested meme
+app.post('/memes/edit/:id',async (req,res)=>{
+    const response = await axios.get(apiURL+'/memes/'+req.params.id)
     const data = await response.data
-    //console.log(data)
-    res.render('index', {data})
+    res.render('updatepage',{data})
 })
 
+// POST request for deleting meme
+app.post('/memes/delete/:id',async (req,res)=>{
+    var data = {
+        id : req.params.id
+    }
+    var returndata
+    await axios({
+        method: "DELETE",
+        url: apiURL+'/memes/'+req.params.id,  
+        data : data
+    })
+    .then( response => returndata = response)
+    .catch( err => console.log(err.response))
+    req.flash('message','Memes deleted successfully')
+    res.redirect('/')
+})
+
+// POST request for searching memes by ID
+app.post('/memesbyid',async (req, res)=>{
+    
+    const response = 'dfa'
+    await axios.get(apiURL+'/memes/'+req.body.id).then(response => {
+        const data1 = response.data
+        console.log(response.data)
+        if(data1){
+            var data = []
+            data.push(data1)
+            console.log(data)
+            res.render('index', {data})
+        }
+        else
+        {
+            res.status(404).render('errorMssg',{
+                error : " Error 404",
+                head : "Meme not found",
+                message : "Please try again with proper meme ID.",
+            })
+        }
+    }).catch(err => {
+        res.status(404).render('errorMssg',{
+            error : " Error 404",
+            head : "Meme not found",
+            message : "Please try again with proper meme ID.",
+        })
+    })
+        
+})
+
+// POST request for rendering error message for invalid URL
+app.get('*', (req,res) => {
+    res.status(404).render('errorMssg',{
+        error : " Error 404",
+        head : "Invalid URL",
+        message : "Please try again with proper address.",
+    })
+})
+
+// PORT allocation for frontend
 app.listen(port, ()=>{
     console.log("Server started at "+ port)
 })
