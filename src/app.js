@@ -4,6 +4,8 @@ const cors = require('cors')
 const path = require('path')
 const hbs = require('hbs')
 const axios = require('axios')
+const flash = require('express-flash')
+const session = require('express-session')
 //const bootstrap = require('bootstrap')
 
 const app = express()
@@ -13,6 +15,11 @@ const resourcePath = path.join(__dirname,'../resource')
 app.use(cors());
 app.use(bodyParser.json()) 
 app.use(bodyParser.urlencoded({ extended: true }))
+app.use(flash())
+app.use(session({ cookie: { maxAge: 60000 }, 
+    secret: 'woot',
+    resave: false, 
+    saveUninitialized: false}));
 
 // PATH FOR DIFFERENT RESOURCES
 const viewsPath = path.join(__dirname,'../template/views')
@@ -36,7 +43,12 @@ app.get('/',async (req, res) =>{
         data[i]=data[data.length - i -1]
         data[data.length - i - 1] = temp
     }
-    res.render('index', {data})
+    var message = req.flash('message')
+    req.flash('message','')
+    res.render('index', {
+        data,
+        message : message
+    })
 })
 
 app.post('/',(req,res)=>{
@@ -58,7 +70,7 @@ app.post('/',(req,res)=>{
     })
     .then( response => console.log(response))
     .catch( err => console.log(err.response))
-
+    req.flash('message','Memes added successfully.')
     res.redirect('/')
 })
 app.post('/memes/delete/:id',async (req,res)=>{
@@ -73,7 +85,7 @@ app.post('/memes/delete/:id',async (req,res)=>{
     })
     .then( response => returndata = response)
     .catch( err => console.log(err.response))
-
+    req.flash('message','Memes deleted successfully')
     res.redirect('/')
 })
 
@@ -98,7 +110,7 @@ app.post('/updatememe',async (req,res)=>{
     }
     //console.log(data)
 
-    axios({
+    await axios({
         method: "post",
         url: 'https://memestreambackend.herokuapp.com/memes/edit',  
         data : data
@@ -106,6 +118,7 @@ app.post('/updatememe',async (req,res)=>{
     .then( response => console.log(response))
     .catch( err => console.log(err.response))
 
+    req.flash('message','Memes updated successfully.')
     res.redirect('/')
 })
 
